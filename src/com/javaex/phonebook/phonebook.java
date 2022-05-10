@@ -2,12 +2,18 @@
 package com.javaex.phonebook;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.Reader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+
+import javax.naming.Name;
 
 public class phonebook {
 
@@ -15,10 +21,12 @@ public class phonebook {
 
 		Scanner sc = new Scanner(System.in);
 		List<Person> pList = new ArrayList<Person>();
-		BufferedReader isr = new BufferedReader(isr);
+		InputStream in = new FileInputStream("C:\\javaStudy\\미니프로젝트\\PhoneDB.txt");
+		InputStreamReader isr = new InputStreamReader(in, "UTF-8");
+		BufferedReader br = new BufferedReader(isr);
 
 		while (true) {
-			String str = isr.readLine();
+			String str = br.readLine();
 			if (str == null) {
 				break;
 			}
@@ -32,12 +40,14 @@ public class phonebook {
 			Person person = new Person(name, hp, company);
 
 			pList.add(person);
-
 		}
+
+		
 		// 초기값
-		int now = 0;
-		String inputLine;
-		String[] inputArray;
+		//int now = 0;
+		//String inputLine;
+		//String[] inputArray;
+		
 
 		// 초기화면
 		while (true) {
@@ -52,75 +62,97 @@ public class phonebook {
 			System.out.println("> 메뉴번호 : ");
 			int n = sc.nextInt();
 
+			
+			// 종료
 			if (n == 5) {
-				System.out.println("종료되었습니다.");
+				System.out.println("***********************");
+				System.out.println("*     종료되었습니다.     *");
+				System.out.println("***********************");
 				break;
 
-				// 리스트 프로그램 시작
+				
+			// 리스트 프로그램 시작
 			} else if (n == 1) {
 				System.out.println("< 리스트 >");
 				System.out.println("");
-				List<Person> personList = new ArrayList<Person>();
+				//List<Person> personList = new ArrayList<Person>();
 
-				// 읽기스트림
-				Reader fr = new FileReader("C:\\javaStudy\\미니프로젝트\\PhoneDB.txt");
 				
-				
-				// text파일을 1줄씩 읽어서 리스트에 추가
-				while (true) {
-					String str = isr.readLine();
-
-					if (str == null) {
-						break;
-					}
-
-					String[] personInfo = str.split(" ");
-
-					String name = personInfo[0];
-					String hp = personInfo[1];
-					String company = personInfo[2];
-
-					Person person = new Person(name, hp, company);
-
-					personList.add(person);
-				}
-
 				// 출력하기
-				for (Person person : personList) {
-					System.out.println("이름: " + person.getName());
-					System.out.println("핸드폰: " + person.getHp());
-					System.out.println("회사: " + person.getCompany());
-					System.out.println("");
+				int i = 1;
+				for (Person person : pList) {
+					System.out.println((i) + ". \t" + person.getName() + "\t" + person.getHp() + "\t" + person.getCompany());
+					i++;
 				}
 
-				isr.close();
-
+				
 				// 등록 프로그램 시작
 			} else if (n == 2) {
-				System.out.println("새 연락처를 등록하세요.");
-				String plus = sc.nextLine();
+				
+				// 읽기스트림
+				Writer fw = new FileWriter("C:\\javaStudy\\미니프로젝트\\PhoneDB.txt");
+				BufferedWriter bw = new BufferedWriter(fw);
 
-				for (int i = 0; i <= 1; i++) {
-					inputLine = sc.nextLine();
-					inputArray = inputLine.split(" ");
+				System.out.println("<2. 등록>");
+				System.out.println(">이름 : ");
+				String name = sc.next();
+
+				System.out.println(">휴대전화 : ");
+				String hp = sc.next();
+
+				System.out.println(">회사전화 : ");
+				String company = sc.next();
+
+				Person newperson = new Person(name , hp ,company);
+				pList.add(newperson);
+				
+				for (Person person: pList) {
+					//inputLine = sc.nextLine();
+					//inputArray = inputLine.split(" ");
+					
+					String plus = person.getName() + "," +person.getHp() +","+person.getCompany();
+					
+					bw.write(plus);
+					bw.newLine();
+					
 				}
 				System.out.println("등록되었습니다.");
+				bw.flush();
+				
 
 				// 삭제 프로그램 시작
 			} else if (n == 3) {
-				System.out.println("삭제할 연락처의 번호를 입력하세요");
-				String minus = sc.nextLine();
+				System.out.println("<3. 삭제>");
+				System.out.println("> 번호 : ");
+				int minus = sc.nextInt() - 1;
+				pList.remove(minus);
 
-				for (int i = 0; i <= 1; i++) {
-					inputLine = sc.nextLine();
-					inputArray = inputLine.split(" ");
-				}
 				System.out.println("삭제되었습니다.");
-			}
+				
+				
+				//검색 프로그램 시작
+			} else if (n ==4) {
+				System.out.println("<4.검색>");
+				System.out.println(">이름 : ");
+				String  serch = sc.next();
+				
+				for (Person person : pList) {
+					if(person.getName().equals(serch))
+					System.out.println(person.toString());
+				}
+				
+				
+				
 
-			// 검색 프로그램 시작
+			//없는메뉴
+			} else {
+				 System.out.println("[다시 입력해 주세요.]");
+
+
 
 		}
+		isr.close();
 		sc.close();
+			}
+		}
 	}
-}

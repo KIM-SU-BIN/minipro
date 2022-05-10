@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.naming.Name;
-
 public class phonebook {
 
 	public static void main(String[] args) throws IOException {
@@ -137,18 +135,13 @@ public class phonebook {
 				String  serch = sc.next();
 				
 				for (Person person : pList) {
-					if(person.getName().equals(serch))
+					if(person.getName().contains(serch))
 					System.out.println(person.toString());
 				}
 				
-				
-				
-
 			//없는메뉴
 			} else {
 				 System.out.println("[다시 입력해 주세요.]");
-
-
 
 		}
 		isr.close();

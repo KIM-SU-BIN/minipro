@@ -82,13 +82,13 @@ public class phonebook {
 				BufferedWriter bw = new BufferedWriter(fw);
 
 				System.out.println("<2. 등록>");
-				System.out.println(">이름 : ");
+				System.out.print(">이름 : ");
 				String name = sc.next();
 
-				System.out.println(">휴대전화 : ");
+				System.out.print(">휴대전화 : ");
 				String hp = sc.next();
 
-				System.out.println(">회사전화 : ");
+				System.out.print(">회사전화 : ");
 				String company = sc.next();
 
 				Person newperson = new Person(name, hp, company);
